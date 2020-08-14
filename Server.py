@@ -6,21 +6,21 @@ import _thread
 import time
 
 
- #cpu
+# CPU Info
 def cpustream(ThreadName):
 
-	print("="*40, "CPU Informations", "="*40)
+	print("="*40, " CPU Info ", "="*40)
 
 	while True:
-		#On récupere le nombre de coeurs
+		# CPU Cores
 		sys.stdout.write(f"\rPhysical cores:" + str(psutil.cpu_count(logical=False)))
 		sys.stdout.write(f"\rTotal cores:" + str(psutil.cpu_count(logical=True)))
 	
-		#On récupere la fréquence du cpu
+		# CPU Clockspeed
 		cpufreq = psutil.cpu_freq()
 		sys.stdout.write(f"\rMax Frequency:  {cpufreq.max:.2f}Mhz")
 
-		#Utilisation du cpu 
+		# CPU Utilization
 		sys.stdout.write(f"\rCPU Usage per Core: ")
 		for i, percentage in enumerate(psutil.cpu_percent(percpu=True, interval=1)):
 
@@ -48,7 +48,7 @@ def diskinformations():
 			return(0)
 		
 
-#La classe qui gère l'exécution de chaque nouveau thread
+# La classe qui gère l'exécution de chaque nouveau thread
 class Threadsystem(threading.Thread):
 
 	def __init__(self, Clientaddr, Clientsocket):
@@ -56,25 +56,24 @@ class Threadsystem(threading.Thread):
 		self.csocket = Clientsocket
 		print("New client connected: ", Clientaddr)
 
-	#Fonction d'exécution basique du thread	
+	# Fonction d'exécution basique du thread
 	def run(self):
-		#diskinformations()
+		# Disk Information()
 		print("Connection from: ", self.csocket)
 		self.csocket.send(bytes("Server informations here: ", 'UTF-8'))
 		commandstatement = ""
 		while True:
 			data = self.csocket.recv(2048)
 			commandstatement = data.decode()
-			if(commandstatement=="shutdown"): #On stoppe ce thread si le client se deconnecte, inutile d'encombrer la mémoire
+			if(commandstatement=="shutdown"): # On stoppe ce thread si le client se deconnecte, inutile d'encombrer la mémoire
 				break
-			elif(commandstatement=="cpustate"): #On check la commande et on retourne ce que le client demande
+			elif(commandstatement=="cpustate"): # On check la commande et on retourne ce que le client demande
 				self.csocket.send(bytes(str(cpustreamvalue()), 'UTF-8'))
 			print("From client: ", commandstatement)
 			self.csocket.send(bytes(commandstatement, 'UTF-8'))
 		print ("Client at ", self.csocket, "disconnected...")
 
-
-#On lance le serveur avec comme argument le port et le protocole 
+# On lance le serveur avec comme argument le port et le protocole
 def main(argv):
 	if (len(sys.argv[1:]) == 2):
 		if (str(sys.argv[2]) == "TCP"):
@@ -101,9 +100,6 @@ def main(argv):
 					print("Received message: %s" % data)
 	else:
 		print("Failed to start the server.")
-
-
-
 
 if __name__ == "__main__":
 	main(sys.argv[1:])

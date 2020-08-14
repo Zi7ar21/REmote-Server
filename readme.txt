@@ -1,7 +1,7 @@
-Ce programme permet de faire de l'administration et du monitoring de serveur en python, il possède quelques commandes basiques:
-Pour lancer le serveur il vous suffit de taper la commande et les arguments avec le modèle suivant: <Port (exemple 51000)> <Protocole(TCP ou UDP)>.
-Pour connecter un client à un serveur vous utiliserez la commande avec ce modèle: <Host (exemple 127.0.0.1)> <Port> <Protocole>.
-Si vous rencontrez des problèmes de connexions alors verifiez que vous respectez bien les mêmes ports côté serveur et côté client.
-Si vous êtes sur un réseau externe verifiez les paramètres NAT de votre routeur.
-Les commandes:
-(Cette partie est encore en cours d'amélioration.)
+This program allows administration and server monitoring in Python, and it comes with some basic commands:
+To start the server, all you have to do is type the command and the arguments like the following: `<Port (example 51000)> <Protocol (TCP or UDP)>`
+To connect a client to a server use the command with like the following: `<Host (example 192.168.0.32)> <Port> <Protocol>`
+If you have connection problems then check that you are using the same ports on the server side as you are on the client side.
+If you are on a WAN network check the NAT settings of your modem.
+The orders:
+(work in progress lol)

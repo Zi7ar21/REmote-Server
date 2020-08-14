@@ -2,7 +2,7 @@ import socket
 import sys
 import time
 import psutil
-#En argument 1er host, 2nd Port, 3e Protocole
+# En argument 1er host, 2nd Port, 3e Protocole
 
 def updatescreen():
 	loading = "#"
@@ -16,17 +16,16 @@ def updatescreen():
 		loading += "#"
 		sys.stdout.flush()
 
-#test d'affichage dynamique de mémoire 
+# test d'affichage dynamique de mémoire 
 def memorystream():
 	while True:
 		for i, percentage in enumerate(psutil.cpu_percent(percpu=True, interval=1)):
 			sys.stdout.write(f"\rCore {i}: {percentage}%")
 			sys.stdout.flush()
 
-
 def main(argv):
 
-	#On récupere les arguments ip et port
+	# On récupere les arguments ip et port
 	if (len(sys.argv[1:]) == 3):
 		if (str(sys.argv[3]) == "TCP"):
 			#try: 
@@ -37,11 +36,11 @@ def main(argv):
 				s.connect((host, port))
 				s.sendall(b'sysinfos')
 				while True:
-					#s.sendall(b'sysinfo')
-					data = s.recv(1024) #Ajouter une boucle while de réception des données 
+					# s.sendall(b'sysinfo')
+					data = s.recv(1024) # Ajouter une boucle while de réception des données 
 					print('Received data: ', repr(data))
 					command = input("SERVER>")
-					if command in commandlist: #On vérifie que la valeur existe dans la liste
+					if command in commandlist: # On vérifie que la valeur existe dans la liste
 						if command == "shutdown":
 							s.sendall(bytes(command, 'UTF-8')) 
 							print("Disconnected from server...")
@@ -69,9 +68,5 @@ def main(argv):
 	else:
 		print("Missing arguments in command statement.")
 
-
 if __name__ == "__main__":
 	main(sys.argv[1:])
-
-
-
