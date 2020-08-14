@@ -1,3 +1,6 @@
+# Readme
+### This is super insecure and has no encryption or authorization. Do not use.
+
 This program allows administration and server monitoring in Python, and it comes with some basic commands. To start the server, all you have to do is type the command with the arguments like the following:
 ```<Port (example 51000)> <Protocol (TCP or UDP)>```
 To connect a client to a server use a command like the following:
