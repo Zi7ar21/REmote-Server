@@ -9,7 +9,7 @@ import time
 # CPU Info
 def cpustream(ThreadName):
 
-	print("="*40, " CPU Info ", "="*40)
+	print("="*5, " CPU Info ", "="*5)
 
 	while True:
 		# CPU Cores
@@ -34,7 +34,7 @@ def cpustreamvalue():
 
 
 def diskinformations():
-	print("="*40, "Disk Informations", "="*40)
+	print("="*5, " Disk Info ", "="*5)
 	print("Partitions and Usage: \n")
 	partitions = psutil.disk_partitions()
 	for partition in partitions:
@@ -48,7 +48,7 @@ def diskinformations():
 			return(0)
 		
 
-# La classe qui gère l'exécution de chaque nouveau thread
+# Manage new threads
 class Threadsystem(threading.Thread):
 
 	def __init__(self, Clientaddr, Clientsocket):
@@ -56,7 +56,7 @@ class Threadsystem(threading.Thread):
 		self.csocket = Clientsocket
 		print("New client connected: ", Clientaddr)
 
-	# Fonction d'exécution basique du thread
+	# Execute thread
 	def run(self):
 		# Disk Information()
 		print("Connection from: ", self.csocket)
@@ -65,15 +65,15 @@ class Threadsystem(threading.Thread):
 		while True:
 			data = self.csocket.recv(2048)
 			commandstatement = data.decode()
-			if(commandstatement=="shutdown"): # On stoppe ce thread si le client se deconnecte, inutile d'encombrer la mémoire
+			if(commandstatement=="shutdown"): # Stop the thread if the client disconnects to prevent memory yeeting
 				break
-			elif(commandstatement=="cpustate"): # On check la commande et on retourne ce que le client demande
+			elif(commandstatement=="cpustate"): # Check the order and return what the client requests
 				self.csocket.send(bytes(str(cpustreamvalue()), 'UTF-8'))
 			print("From client: ", commandstatement)
 			self.csocket.send(bytes(commandstatement, 'UTF-8'))
 		print ("Client at ", self.csocket, "disconnected...")
 
-# On lance le serveur avec comme argument le port et le protocole
+# Port and Protocol Argument
 def main(argv):
 	if (len(sys.argv[1:]) == 2):
 		if (str(sys.argv[2]) == "TCP"):
@@ -83,11 +83,11 @@ def main(argv):
 			with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 				s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 				s.bind((host, port))
-				while True:	
+				while True:
 					s.listen(1)
 					clientsock, cliendAddress = s.accept()
 					newthread = Threadsystem(cliendAddress, clientsock)
-					#Le serveur lance un nouveau thread si nécéssaire
+					# Start a new thread if neccesary
 					newthread.start()
 
 		elif (str(sys.argv[2] == "UDP")):

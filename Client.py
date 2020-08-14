@@ -2,7 +2,7 @@ import socket
 import sys
 import time
 import psutil
-# En argument 1er host, 2nd Port, 3e Protocole
+# Command Format: Host, Port, Protocol
 
 def updatescreen():
 	loading = "#"
@@ -16,7 +16,7 @@ def updatescreen():
 		loading += "#"
 		sys.stdout.flush()
 
-# test d'affichage dynamique de mémoire 
+# Memory Dyanamic Display
 def memorystream():
 	while True:
 		for i, percentage in enumerate(psutil.cpu_percent(percpu=True, interval=1)):
@@ -25,22 +25,22 @@ def memorystream():
 
 def main(argv):
 
-	# On récupere les arguments ip et port
+	# Find the arguments
 	if (len(sys.argv[1:]) == 3):
 		if (str(sys.argv[3]) == "TCP"):
 			#try: 
 			host = str(sys.argv[1])
 			port = int(sys.argv[2])
-			commandlist = ['help', 'shutdown', 'cpustate', 'command4', 'command5', 'command6'] #Tableau de commandes autorisées
+			commandlist = ['help', 'shutdown', 'cpustate', 'command4', 'command5', 'command6'] # Table of commands
 			with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 				s.connect((host, port))
 				s.sendall(b'sysinfos')
 				while True:
 					# s.sendall(b'sysinfo')
-					data = s.recv(1024) # Ajouter une boucle while de réception des données 
+					data = s.recv(1024) # Recieve data
 					print('Received data: ', repr(data))
 					command = input("SERVER>")
-					if command in commandlist: # On vérifie que la valeur existe dans la liste
+					if command in commandlist: # Check the variable exists
 						if command == "shutdown":
 							s.sendall(bytes(command, 'UTF-8')) 
 							print("Disconnected from server...")
@@ -66,7 +66,7 @@ def main(argv):
 
 			print("In development...")
 	else:
-		print("Missing arguments in command statement.")
+		print("Missing arguments in command.")
 
 if __name__ == "__main__":
 	main(sys.argv[1:])
