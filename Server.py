@@ -5,17 +5,14 @@ import threading
 import _thread 
 import time
 
-
 # CPU Info
 def cpustream(ThreadName):
-
 	print("="*5, " CPU Info ", "="*5)
-
 	while True:
 		# CPU Cores
 		sys.stdout.write(f"\rPhysical cores:" + str(psutil.cpu_count(logical=False)))
 		sys.stdout.write(f"\rTotal cores:" + str(psutil.cpu_count(logical=True)))
-	
+
 		# CPU Clockspeed
 		cpufreq = psutil.cpu_freq()
 		sys.stdout.write(f"\rMax Frequency:  {cpufreq.max:.2f}Mhz")
@@ -32,7 +29,6 @@ def cpustreamvalue():
 	total_core = psutil.cpu_count(logical=True)
 	return(physical_core, total_core)
 
-
 def diskinformations():
 	print("="*5, " Disk Info ", "="*5)
 	print("Partitions and Usage: \n")
@@ -46,16 +42,13 @@ def diskinformations():
 		except PermissionError:
 			print("Error, access denied.")
 			return(0)
-		
 
 # Manage new threads
 class Threadsystem(threading.Thread):
-
 	def __init__(self, Clientaddr, Clientsocket):
 		threading.Thread.__init__(self)
 		self.csocket = Clientsocket
 		print("New client connected: ", Clientaddr)
-
 	# Execute thread
 	def run(self):
 		# Disk Information()
@@ -77,7 +70,6 @@ class Threadsystem(threading.Thread):
 def main(argv):
 	if (len(sys.argv[1:]) == 2):
 		if (str(sys.argv[2]) == "TCP"):
-
 			host = ''
 			port = int(sys.argv[1])
 			with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -89,7 +81,6 @@ def main(argv):
 					newthread = Threadsystem(cliendAddress, clientsock)
 					# Start a new thread if neccesary
 					newthread.start()
-
 		elif (str(sys.argv[2] == "UDP")):
 			host = '127.0.0.1'
 			port = int(sys.argv[1])

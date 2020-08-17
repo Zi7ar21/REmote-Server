@@ -2,21 +2,21 @@ import socket
 import sys
 import time
 import psutil
-# Command Format: Host, Port, Protocol
+# Command Arguments Format: Host, Port, Protocol
 
 def updatescreen():
 	loading = "#"
-	loadingdec = "         "
+	loadingdec = " "
 	print("Memory state: \n")
 	for i in range (0, 10):
 		time.sleep(1)
-		#sys.stdout.write("\rDoing thing: " + str(i))
+		sys.stdout.write("\rDoing thing: " + str(i))
 		sys.stdout.write("\r[" + loading + loadingdec + "]")
 		loadingdec = loadingdec[:-1]
 		loading += "#"
 		sys.stdout.flush()
 
-# Memory Dyanamic Display
+# Dynamic Memory Display
 def memorystream():
 	while True:
 		for i, percentage in enumerate(psutil.cpu_percent(percpu=True, interval=1)):
@@ -24,7 +24,6 @@ def memorystream():
 			sys.stdout.flush()
 
 def main(argv):
-
 	# Find the arguments
 	if (len(sys.argv[1:]) == 3):
 		if (str(sys.argv[3]) == "TCP"):
@@ -34,7 +33,7 @@ def main(argv):
 			commandlist = ['help', 'shutdown', 'cpustate', 'command4', 'command5', 'command6'] # Table of commands
 			with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 				s.connect((host, port))
-				s.sendall(b'sysinfos')
+				s.sendall(b'sysinfo')
 				while True:
 					# s.sendall(b'sysinfo')
 					data = s.recv(1024) # Recieve data
@@ -53,8 +52,6 @@ def main(argv):
 					else:
 						print("Command not found.")
 						continue
-
-
 		elif(str(sys.argv[3]) == "UDP"):
 			#try:
 			host = str(sys.argv[1])
@@ -63,8 +60,7 @@ def main(argv):
 				s.sendto(b'sysinfo', (host, port))
 				print("Message sent as: %s" % host)
 				print("On port: %s" % port)
-
-			print("In development...")
+			print("Work in progress...")
 	else:
 		print("Missing arguments in command.")
 
