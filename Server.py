@@ -29,7 +29,7 @@ def cpustreamvalue():
 	total_core = psutil.cpu_count(logical=True)
 	return(physical_core, total_core)
 
-def diskinformations():
+def diskinformation():
 	print("="*5, " Disk Info ", "="*5)
 	print("Partitions and Usage: \n")
 	partitions = psutil.disk_partitions()
@@ -62,6 +62,8 @@ class Threadsystem(threading.Thread):
 				break
 			elif(commandstatement=="cpustate"): # Check the order and return what the client requests
 				self.csocket.send(bytes(str(cpustreamvalue()), 'UTF-8'))
+			elif(commandstatement=="diskinfo"): # Disk info
+				self.csocket.send(bytes(str(diskinformation()), 'UTF-8'))
 			print("From client: ", commandstatement)
 			self.csocket.send(bytes(commandstatement, 'UTF-8'))
 		print ("Client at ", self.csocket, "disconnected...")
@@ -81,14 +83,14 @@ def main(argv):
 					newthread = Threadsystem(cliendAddress, clientsock)
 					# Start a new thread if neccesary
 					newthread.start()
-		elif (str(sys.argv[2] == "UDP")):
-			host = '127.0.0.1'
-			port = int(sys.argv[1])
-			with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-				s.bind((host, port))
-				while True:
-					data, addr = s.recvfrom(1024)
-					print("Received message: %s" % data)
+		#elif (str(sys.argv[2] == "UDP")):
+		#	host = '127.0.0.1'
+		#	port = int(sys.argv[1])
+		#	with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+		#		s.bind((host, port))
+		#		while True:
+		#			data, addr = s.recvfrom(1024)
+		#			print("Received message: %s" % data)
 	else:
 		print("Failed to start the server.")
 
